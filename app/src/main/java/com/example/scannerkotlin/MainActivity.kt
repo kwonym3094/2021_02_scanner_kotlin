@@ -12,6 +12,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import com.example.scannerkotlin.DB.table_history.HistoryDatabase
 import com.example.scannerkotlin.DB.table_history.HistoryEntity
+import com.example.scannerkotlin.utils.LangConfigUtils.setLocale
 import com.google.zxing.integration.android.IntentIntegrator
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.coroutines.GlobalScope
@@ -44,18 +45,27 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        // db 정의 (Singleton)
         db = HistoryDatabase.getInstance(this)!!
 
+        // 이력 버튼 클릭시
         btnHistory.setOnClickListener {
             historyCallback.launch(Intent(this, HistoryActivity::class.java))
         }
 
+        // 스캔 버튼 클릭시
         btnScan.setOnClickListener {
+            // zxing 라이브러리를 사용하기 위한 과정
             val scanner = IntentIntegrator(this)
-            scanner.setPrompt("Scan QR code")
+            // customizing 한 화면을 띄우는 방법
             scanner.captureActivity = CustomScanner::class.java
             scanner.initiateScan()
+        }
 
+        // 언어 버튼 클릭시
+        btnLang.setOnClickListener {
+            // 등록된 언어 두개 중 다른것으로 변경
+            changeLanguage()
         }
     }
 
@@ -82,8 +92,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     // 스캔한 바코드에 비지니스룰 적용하는 메소드
-    private fun setTextByRules(strRaw: String) {
-
+    private fun setTextByRules(rawStr: String) {
         try {
             // 바코드 예시 : [)>06VD003P55210F2BA0SB120EHB1F0613T20122441SAA0000008
 
@@ -111,7 +120,7 @@ class MainActivity : AppCompatActivity() {
             val strNg = resources.getString(R.string.ng)
 
             // 화면에서 보일 수 있게 ASCII 문자 변경
-            var strRaw = strRaw.replace(chEot, strEot).replace(chGs, strGs).replace(chRs, strRs)
+            val strRaw = rawStr.replace(chEot, strEot).replace(chGs, strGs).replace(chRs, strRs)
 
             rawBarCd.text = Html.fromHtml(strRaw)
 
@@ -259,6 +268,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    // 내장 db에 데이터 저장
     private fun insertScan(strRaw: String){
         GlobalScope.launch {
 
@@ -272,5 +282,16 @@ class MainActivity : AppCompatActivity() {
 
         }
     }
+
+    // 상대 언어로 변경
+    private fun changeLanguage() {
+        val lang = Locale.getDefault().language
+        if (lang == "ko") {
+            setLocale(this,"en")
+        } else {
+            setLocale(this,"ko")
+        }
+    }
+
 
 }

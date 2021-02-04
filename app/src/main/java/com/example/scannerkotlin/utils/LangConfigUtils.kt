@@ -10,11 +10,12 @@ import java.util.*
 /**
  * Created by ymKwon on 2021-02-04 오후 4:08.
  */
+
 object LangConfigUtils {
     /**
      * @author kwonym
      * @version 1.0.0
-     * @since 2021-01-11 오후 2:20
+     * @since 2021-02-04 오후 4:08
      *
      * 언어 설정 메소드
      * - 언어 변경 전 만들어진 액티비티는 변경된 언어가 바로 적용되지 않음 -> 액티비티를 다시 시작해야함
@@ -40,13 +41,13 @@ object LangConfigUtils {
             val child = root.getChildAt(i)
             if (child is TextView) {
                 if (child.getTag() != null) {
-                    if (child.text != null && child.text.toString().length > 0) {
+                    if (child.text != null && child.text.toString().isNotEmpty()) {
                         val stringId = getResourceId(context, child.getTag())
                         child.setText(stringId)
                         // Log.i(TAG, "getText:" + ((TextView)
                         // child).getText());
                     }
-                    if (child.hint != null && child.hint.toString().length > 0) {
+                    if (child.hint != null && child.hint.toString().isNotEmpty()) {
                         val hintId = getResourceId(context, child.getTag())
                         child.setHint(hintId)
 
