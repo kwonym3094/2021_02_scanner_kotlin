@@ -59,7 +59,7 @@ object LangConfigUtils {
         }
     }
 
-    fun getResourceId(context: Context, tag: Any?): Int {
+    private fun getResourceId(context: Context, tag: Any?): Int {
         return context.resources.getIdentifier(tag as String?, "string", context.packageName)
     }
 

@@ -45,6 +45,9 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        // 로딩화면 띄워주기
+        startActivity(Intent(this,LoadingActivity::class.java))
+
         // db 정의 (Singleton)
         db = HistoryDatabase.getInstance(this)!!
 
