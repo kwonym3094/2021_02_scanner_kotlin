@@ -58,6 +58,8 @@ class MainActivity : AppCompatActivity() {
 
         // 스캔 버튼 클릭시
         btnScan.setOnClickListener {
+            // 화면 초기화
+            clearTextViews()
             // zxing 라이브러리를 사용하기 위한 과정
             val scanner = IntentIntegrator(this)
             // customizing 한 화면을 띄우는 방법
